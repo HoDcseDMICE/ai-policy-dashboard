@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>AI Policy Dashboard Launcher</title>
+
+    <!-- Unique access code metadata for searchability -->
+    <meta name="description" content="AI Policy Dashboard - Access Code: AI-DASH-2026-7G4Z - Global AI policy trends, topic modeling, sentiment, and reports">
+    <meta name="keywords" content="AI Policy Dashboard, AI-DASH-2026-7G4Z, policy, generative AI, topic modeling, sentiment">
+  </head>
+  <body>
+    <h1>AI Policy Dashboard</h1>
+    <p>This site is a lightweight launcher for the AI Policy Dashboard.</p>
+    <p>If the app is deployed, the environment variable <code>DEPLOY_URL</code> will redirect you automatically.</p>
+
+    <script>
+      // If DEPLOY_URL is injected at build-time, redirect to it.
+      const deployUrl = "http://localhost:8501"; // replaced with local dev URL
+      if (deployUrl && !deployUrl.startsWith("__")) {
+        window.location.href = deployUrl;
+      } else {
+        document.write('<p>Deployed app URL not configured. Follow README for deployment steps.</p>');
+      }
+    </script>
+
+    <footer>
+      <p>Access Code: <strong>AI-DASH-2026-7G4Z</strong></p>
+    </footer>
+  </body>
+</html>

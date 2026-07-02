@@ -20,8 +20,8 @@ from src.dashboard_models import (
 
 # Configure page
 st.set_page_config(
-    page_title="AI Policy Trends Dashboard",
-    page_icon="🤖",
+    page_title="POLARIS AI",
+    page_icon="assets/polaris-logo.png",
     layout="wide",
     initial_sidebar_state="expanded"
 )
@@ -353,7 +353,7 @@ if page == "🏠 Home":
             </div>
         """, unsafe_allow_html=True)
     with hero_col2:
-        logo_path = Path(__file__).parent / 'assets' / 'polaris_logo.svg'
+        logo_path = Path(__file__).parent / 'assets' / 'polaris-logo.png'
         if logo_path.exists():
             st.image(str(logo_path), width=220)
 

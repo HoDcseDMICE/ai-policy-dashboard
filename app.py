@@ -6,13 +6,10 @@ from pathlib import Path
 import sys
 import os
 
-# Add src to path
-sys.path.insert(0, str(Path(__file__).parent / 'src'))
-
-from data_processor import DataProcessor
-from nlp_analyzer import NLPAnalyzer, RegulationScorer
-from utils import SessionState, load_data, format_large_number
-from dashboard_models import (
+from src.data_processor import DataProcessor
+from src.nlp_analyzer import NLPAnalyzer, RegulationScorer
+from src.utils import SessionState, load_data, format_large_number
+from src.dashboard_models import (
     lda_topics,
     bertopic_topics,
     sentiment_label,
@@ -292,7 +289,7 @@ st.sidebar.title("🧭 Navigation")
 page = st.sidebar.radio(
     "Select a page:",
     ["🏠 Home", "📊 Policy Analytics", "🗣️ Sentiment Analysis", "🎯 Topic Modeling", 
-     "📈 Trends & Forecasting", "🔬 Analytics", "🔍 Search & Explore", "📋 Reports"],
+     "📈 Trends & Forecasting", "🔬 Analytics", "🔍 Search & Explore", "📋 Reports", "📥 Upload Data"],
     key="page_selector"
 )
 
@@ -356,6 +353,10 @@ if page == "🏠 Home":
             </div>
         """, unsafe_allow_html=True)
     with hero_col2:
+        logo_path = Path(__file__).parent / 'assets' / 'polaris_logo.svg'
+        if logo_path.exists():
+            st.image(str(logo_path), width=220)
+
         st.markdown("""
             <div class='dashboard-card'>
                 <h3>Explore Fast</h3>
@@ -407,7 +408,7 @@ if page == "🏠 Home":
             </div>
         """, unsafe_allow_html=True)
 
-    data_status = "Ready" if st.session_state.data_loaded or (output_dir / 'merged_policy_data.csv').exists() else "Not ready"
+    data_status = "Ready" if st.session_state.get("data_loaded", False) or (output_dir / 'merged_policy_data.csv').exists() else "Not ready"
     status_text = "Data is ready for exploration." if data_status == "Ready" else "Data is not loaded yet. Run the load process to begin."
     st.markdown(f"""
         <div class='dashboard-card'>
@@ -476,6 +477,24 @@ if page == "🏠 Home":
         </div>
     """, unsafe_allow_html=True)
     
+    st.markdown('</div>', unsafe_allow_html=True)
+
+
+# ==================== UPLOAD PAGE ====================
+elif page == "📥 Upload Data":
+    render_page_header("📥 Upload Data", "Upload policy datasets (CSV, XLSX, JSON, TXT, PDF, DOCX, ZIP). Files validated and saved to data/uploads.")
+    st.markdown('<div class="page-section">', unsafe_allow_html=True)
+
+    uploaded = st.file_uploader("Upload a dataset file", type=['csv','xlsx','json','txt','pdf','docx','zip'], accept_multiple_files=False)
+    if uploaded is not None:
+        from src.ingest import ingest_file
+        # st.file_uploader returns a SpooledTemporaryFile like object
+        success, msg = ingest_file(uploaded, uploaded.name)
+        if success:
+            st.success(f"File uploaded and validated: {msg}")
+        else:
+            st.error(f"Upload failed: {msg}")
+
     st.markdown('</div>', unsafe_allow_html=True)
 
 # ==================== POLICY ANALYTICS PAGE ====================

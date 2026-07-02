@@ -1,0 +1,12 @@
+{
+    "admin": {
+        "username": "admin",
+        "password_hash": "8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918",
+        "role": "admin"
+    },
+    "SAI PRANAV": {
+        "username": "SAI PRANAV",
+        "password_hash": "076ec54bfca83ca58f381e9bd0e133b85f669dce4a07456481c98c175f023fef",
+        "role": "user"
+    }
+}

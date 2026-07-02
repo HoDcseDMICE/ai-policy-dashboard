@@ -1,0 +1,72 @@
+Authority,Maturity Score,Documents Count,Avg Document Length,Domain Coverage,Recency Score
+Chinese central government,54.6,15,1244.0,8.4,10.0
+Private-sector companies,52.8,13,1379.0,9.9,10.0
+California,50.9,17,1190.0,4.9,10.0
+United States Congress,49.0,440,1118.0,3.4,10.0
+Executive Office of the President,43.9,7,1493.0,12.4,10.0
+Food and Drug Administration,43.5,12,1004.0,4.5,10.0
+Other multinational,42.6,6,1415.0,13.5,10.0
+New York,42.2,11,994.0,5.2,10.0
+National Institute of Standards and Technology,40.5,1,2328.0,18.0,8.9
+Other authorities,38.5,5,1308.0,12.0,10.0
+Government of New Zealand,36.2,2,1368.0,16.5,8.9
+Department of Agriculture,36.2,1,1249.0,18.0,10.0
+Government of Australia,35.2,2,1232.0,15.0,10.0
+OECD,34.1,1,1326.0,21.0,4.4
+Government of Canada,33.6,4,1318.0,11.2,7.8
+Government of the United Kingdom,32.8,1,1390.0,15.0,8.9
+Massachusetts,32.7,4,1146.0,9.0,10.0
+District of Columbia,32.6,1,1949.0,12.0,8.9
+Utah,31.8,6,1153.0,4.0,10.0
+Colorado,31.6,3,1325.0,9.0,10.0
+Department of Housing and Urban Development,30.9,1,1372.0,12.0,10.0
+New Jersey,30.8,6,1081.0,4.5,8.9
+Illinois,30.3,5,1211.0,4.2,10.0
+Government of Israel,29.7,1,1367.0,12.0,8.9
+Office of Management and Budget,29.1,2,1224.0,9.0,10.0
+Tennessee,28.5,4,1204.0,4.5,10.0
+Department of Health and Human Services,28.2,2,1338.0,7.5,10.0
+Office of Science and Technology Policy,27.7,1,1335.0,9.0,10.0
+Idaho,27.2,3,1240.0,5.0,10.0
+Connecticut,27.1,3,1421.0,4.0,10.0
+Washington,26.8,2,1286.0,7.5,8.9
+European Union,26.5,3,1335.0,6.0,7.8
+Office of Personnel Management,26.5,2,1300.0,6.0,10.0
+New Hampshire,26.1,3,1217.0,4.0,10.0
+Alabama,26.0,3,1208.0,4.0,10.0
+Virginia,25.3,2,1066.0,6.0,10.0
+New Mexico,25.2,2,1332.0,4.5,10.0
+Department of Commerce,25.2,3,1234.0,3.0,10.0
+Oregon,24.6,2,1210.0,4.5,10.0
+Indiana,24.3,3,1263.0,2.0,10.0
+Department of Transportation,24.3,1,1267.0,6.0,10.0
+Arizona,23.8,4,868.0,1.5,10.0
+Texas,23.8,2,978.0,6.0,8.9
+Department of Education,23.6,1,1120.0,6.0,10.0
+Florida,23.4,2,1288.0,3.0,10.0
+North Carolina,22.9,1,1198.0,6.0,8.9
+West Virginia,22.9,2,1190.0,3.0,10.0
+Rhode Island,22.4,2,1006.0,4.5,8.9
+South Dakota,22.1,1,1415.0,3.0,10.0
+Pennsylvania,21.9,3,994.0,2.0,8.9
+Maryland,21.6,2,1214.0,1.5,10.0
+Consumer Financial Protection Bureau,21.6,1,1312.0,3.0,10.0
+Hawaii,21.1,2,1130.0,1.5,10.0
+Delaware,20.8,1,1165.0,3.0,10.0
+Chinese provincial and local governments,20.8,1,1613.0,3.0,7.8
+New York City,20.8,1,851.0,9.0,5.6
+United Nations,20.5,2,708.0,3.0,10.0
+Michigan,20.4,2,1199.0,1.5,8.9
+Wisconsin,20.2,1,1262.0,3.0,8.9
+Department of Defense,20.0,1,992.0,3.0,10.0
+Mississippi,19.8,2,1160.0,0.0,10.0
+"Copyright Office, Library of Congress",18.6,1,729.0,3.0,10.0
+Nebraska,17.6,1,1128.0,0.0,10.0
+Iowa,17.5,1,1101.0,0.0,10.0
+Federal Election Commission,17.4,1,1073.0,0.0,10.0
+Minnesota,17.4,1,1303.0,0.0,8.9
+Louisiana,16.4,1,879.0,0.0,10.0
+South Carolina,15.6,1,944.0,0.0,8.9
+Georgia,14.3,1,678.0,0.0,8.9
+North Dakota,12.0,1,221.0,0.0,8.9
+Arkansas,10.8,1,875.0,0.0,4.4

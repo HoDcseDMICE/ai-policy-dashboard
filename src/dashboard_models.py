@@ -78,10 +78,14 @@ def bertopic_topics(texts: List[str], min_topic_size: int = 10) -> Dict[str, Any
     """
     if BERTopic is None:
         raise RuntimeError("BERTopic is not installed. Install with `pip install bertopic` to use this function.")
-    model = BERTopic(min_topic_size=min_topic_size)
-    topics, probs = model.fit_transform(texts)
-    topic_info = model.get_topic_info()
-    return {"model": model, "topics": topic_info.to_dict(orient="records"), "assignments": topics, "probs": probs}
+    try:
+        model = BERTopic(min_topic_size=min_topic_size)
+        topics, probs = model.fit_transform(texts)
+        topic_info = model.get_topic_info()
+        return {"model": model, "topics": topic_info.to_dict(orient="records"), "assignments": topics, "probs": probs}
+    except Exception as e:
+        # Provide an informative error without crashing the app
+        raise RuntimeError(f"BERTopic failed to run: {e}")
 
 
 def sentiment_label(texts: List[str], threshold: float = 0.1) -> pd.DataFrame:

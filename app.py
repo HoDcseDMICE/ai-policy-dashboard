@@ -403,11 +403,9 @@ if page == "🏠 Home":
         if st.button("🔄 Refresh Data", key="refresh_data_btn"):
             processor = process_and_load_data()
     with button_col3:
-        st.markdown("""
-            <div class='metric-card'>
-                <div class='metric-label'>Tip: All modules load from the same processed dataset once ready.</div>
-            </div>
-        """, unsafe_allow_html=True)
+        if st.button("🤖 Model Evaluation", key="home_model_eval_btn"):
+            st.session_state.page_selector = "🤖 Model Evaluation"
+            st.rerun()
 
     data_status = "Ready" if st.session_state.get("data_loaded", False) or (output_dir / 'merged_policy_data.csv').exists() else "Not ready"
     status_text = "Data is ready for exploration." if data_status == "Ready" else "Data is not loaded yet. Run the load process to begin."

@@ -386,6 +386,22 @@ def analyze(req: AnalyzeRequest) -> Dict[str, Any]:
     if not text:
         raise HTTPException(status_code=400, detail="Text is required for analysis")
         
+    from services.inference import inference_service
+    
+    # 1. Run actual ML inference
+    doc_len = len(text.split())
+    ml_result = inference_service.predict(text, doc_len)
+    
+    # Check if ML succeeded
+    is_active = False
+    confidence = 0.85
+    algo = "Simulated Fallback"
+    
+    if "error" not in ml_result:
+        is_active = (ml_result.get("prediction") == "Active/Adopted")
+        confidence = ml_result.get("confidence", 0.85)
+        algo = ml_result.get("algorithm_used", "XGBoost")
+        
     sia = SentimentIntensityAnalyzer()
     
     # Run dynamic local analysis
@@ -407,7 +423,9 @@ def analyze(req: AnalyzeRequest) -> Dict[str, Any]:
     
     words = text.split()
     word_count = len(words)
-    maturity_score = min(92, 40 + min(40, word_count // 5))
+    
+    # Use ML confidence to influence maturity score
+    maturity_score = int(min(98, 50 + (confidence * 45)))
     
     risk_keywords = ["harm", "risk", "hazard", "threat", "danger", "penalty", "fine", "restrict", "ban", "prohibit"]
     risk_count = sum(1 for w in words if w.lower().replace(",", "").replace(".", "") in risk_keywords)
@@ -460,12 +478,12 @@ def analyze(req: AnalyzeRequest) -> Dict[str, Any]:
             recommendations.append(r)
             
     policy_doc = {
-        "id": "gemini-" + str(int(np.random.randint(100000, 999999))),
-        "title": "Ingested Framework: " + (text[:40] + "..." if len(text) > 40 else text),
+        "id": "ml-analyzed-" + hashlib.md5(text.encode()).hexdigest()[:6],
+        "title": f"Analyzed Document ({algo} Confidence: {confidence:.0%})",
         "country": "Custom Upload",
         "countryCode": "XX",
         "year": 2026,
-        "status": "Proposed",
+        "status": "Adopted" if is_active else "Under Review",
         "summary": text[:180] + "..." if len(text) > 180 else text,
         "sentiment": sentiment,
         "sentimentScores": sentiment_scores,

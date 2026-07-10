@@ -17,6 +17,7 @@ from src.dashboard_models import (
     impact_predict,
     load_texts_from_csv,
 )
+from src.ml_models import train_and_evaluate_models
 
 # Configure page
 st.set_page_config(
@@ -289,7 +290,7 @@ st.sidebar.title("🧭 Navigation")
 page = st.sidebar.radio(
     "Select a page:",
     ["🏠 Home", "📊 Policy Analytics", "🗣️ Sentiment Analysis", "🎯 Topic Modeling", 
-     "📈 Trends & Forecasting", "🔬 Analytics", "🔍 Search & Explore", "📋 Reports", "📥 Upload Data"],
+     "📈 Trends & Forecasting", "🔬 Analytics", "🔍 Search & Explore", "📋 Reports", "📥 Upload Data", "🤖 ML Models & Evaluation"],
     key="page_selector"
 )
 
@@ -1016,6 +1017,60 @@ elif page == "📋 Reports":
                 )
         except Exception as e:
             st.error(f"Error generating report: {e}")
+    st.markdown('</div>', unsafe_allow_html=True)
+
+# ==================== ML MODELS EVALUATION ====================
+if page == "🤖 ML Models & Evaluation":
+    render_page_header("🤖 Machine Learning Evaluator", "Train and evaluate XGBoost and Random Forest algorithms on AI policy data.")
+    st.markdown('<div class="page-section">', unsafe_allow_html=True)
+    
+    st.markdown("""
+        <div class="dashboard-card">
+            <h3>Model Configuration & Run</h3>
+            <p class="panel-copy">This section builds and evaluates XGBoost and Random Forest algorithms specifically, predicting if a policy is active based on text properties.</p>
+        </div>
+    """, unsafe_allow_html=True)
+    
+    if st.button("🚀 Run / Evaluate Models"):
+        with st.spinner("Training Random Forest and XGBoost models. This may take a moment..."):
+            result = train_and_evaluate_models(data_path=str(output_dir / "merged_policy_data.csv"))
+            
+            if "error" in result:
+                st.error(f"Error during training: {result['error']}")
+            else:
+                metrics = result["metrics"]
+                log_path = result["log_path"]
+                
+                st.success("Models trained successfully!")
+                
+                col1, col2 = st.columns(2)
+                with col1:
+                    rf_acc = metrics["Random Forest"]["accuracy"]
+                    st.markdown(f"""
+                        <div class='metric-card'>
+                            <div class='metric-value'>{rf_acc:.4f}</div>
+                            <div class='metric-label'>Random Forest Accuracy</div>
+                        </div>
+                    """, unsafe_allow_html=True)
+                with col2:
+                    xgb_acc = metrics["XGBoost"]["accuracy"]
+                    st.markdown(f"""
+                        <div class='metric-card'>
+                            <div class='metric-value'>{xgb_acc:.4f}</div>
+                            <div class='metric-label'>XGBoost Accuracy</div>
+                        </div>
+                    """, unsafe_allow_html=True)
+                    
+                st.markdown("### Training Log File")
+                st.markdown("Below is the output log generated during model training:")
+                
+                if Path(log_path).exists():
+                    with open(log_path, "r") as f:
+                        log_contents = f.read()
+                    st.text_area("Log Output", log_contents, height=300)
+                else:
+                    st.warning("Log file not found.")
+                    
     st.markdown('</div>', unsafe_allow_html=True)
 
 # Footer

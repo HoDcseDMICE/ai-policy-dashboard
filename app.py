@@ -389,32 +389,35 @@ if page == "🏠 Home":
         """, unsafe_allow_html=True)
 
     st.markdown("""
-        <div class='dashboard-panel'>
-            <h3>Launchpad Controls</h3>
-            <p class='panel-copy'>Prepare your dataset and refresh analytics before jumping into the data explorer. Successful analysis starts with clean data.</p>
-        </div>
-    """, unsafe_allow_html=True)
-
-    button_col1, button_col2, button_col3 = st.columns([1, 1, 1])
-    with button_col1:
-        if st.button("🚀 Load & Process Data", key="load_data_btn"):
-            processor = process_and_load_data()
-    with button_col2:
-        if st.button("🔄 Refresh Data", key="refresh_data_btn"):
-            processor = process_and_load_data()
-    with button_col3:
-        if st.button("🤖 Model Evaluation", key="home_model_eval_btn"):
-            st.session_state.page_selector = "🤖 Model Evaluation"
-            st.rerun()
-
-    data_status = "Ready" if st.session_state.get("data_loaded", False) or (output_dir / 'merged_policy_data.csv').exists() else "Not ready"
-    status_text = "Data is ready for exploration." if data_status == "Ready" else "Data is not loaded yet. Run the load process to begin."
-    st.markdown(f"""
         <div class='dashboard-card'>
-            <h3>Dataset Status: {data_status}</h3>
-            <p class='panel-copy'>{status_text}</p>
+            <h3>📊 Model Comparison</h3>
+            <p class='panel-copy'>Performance metrics for the trained Machine Learning algorithms used for automated policy evaluation.</p>
         </div>
     """, unsafe_allow_html=True)
+    
+    # Check if models are trained
+    import json
+    models_dir = output_dir.parent / "models"
+    meta_path = models_dir / "Metadata.json"
+    
+    if meta_path.exists():
+        with open(meta_path, "r") as f:
+            metadata = json.load(f)
+            
+        metrics = metadata.get("metrics", {})
+        if "XGBoost" in metrics and "RandomForest" in metrics:
+            xgb = metrics["XGBoost"]
+            rf = metrics["RandomForest"]
+            
+            comp_data = {
+                "Metric": ["Accuracy", "Precision", "Recall", "F1 Score", "ROC-AUC", "Prediction Time"],
+                "XGBoost": [f"{xgb['Accuracy']*100:.1f}%", f"{xgb['Precision']*100:.1f}%", f"{xgb['Recall']*100:.1f}%", f"{xgb['F1_Score']*100:.1f}%", f"{xgb['ROC_AUC']:.2f}", f"{xgb['InferenceTime']:.4f} s"],
+                "Random Forest": [f"{rf['Accuracy']*100:.1f}%", f"{rf['Precision']*100:.1f}%", f"{rf['Recall']*100:.1f}%", f"{rf['F1_Score']*100:.1f}%", f"{rf['ROC_AUC']:.2f}", f"{rf['InferenceTime']:.4f} s"]
+            }
+            st.table(pd.DataFrame(comp_data))
+    else:
+        st.info("Models are not trained yet. Run the ML pipeline to generate these metrics.")
+
 
     st.markdown("""
         <div class='dashboard-card'>

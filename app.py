@@ -290,7 +290,7 @@ st.sidebar.title("🧭 Navigation")
 page = st.sidebar.radio(
     "Select a page:",
     ["🏠 Home", "📊 Policy Analytics", "🗣️ Sentiment Analysis", "🎯 Topic Modeling", 
-     "📈 Trends & Forecasting", "🔬 Analytics", "🔍 Search & Explore", "📋 Reports", "📥 Upload Data", "🤖 ML Models & Evaluation"],
+     "📈 Trends & Forecasting", "🔬 Analytics", "🔍 Search & Explore", "📋 Reports", "📥 Upload Data", "🤖 Model Evaluation", "📝 System Logs"],
     key="page_selector"
 )
 
@@ -1019,59 +1019,83 @@ elif page == "📋 Reports":
             st.error(f"Error generating report: {e}")
     st.markdown('</div>', unsafe_allow_html=True)
 
-# ==================== ML MODELS EVALUATION ====================
-if page == "🤖 ML Models & Evaluation":
-    render_page_header("🤖 Machine Learning Evaluator", "Train and evaluate XGBoost and Random Forest algorithms on AI policy data.")
-    st.markdown('<div class="page-section">', unsafe_allow_html=True)
+# ==================== MODEL EVALUATION ====================
+if page == "🤖 Model Evaluation":
+    render_page_header("🤖 Model Evaluation", "Machine Learning Pipeline Evaluation and Comparison")
     
-    st.markdown("""
-        <div class="dashboard-card">
-            <h3>Model Configuration & Run</h3>
-            <p class="panel-copy">This section builds and evaluates XGBoost and Random Forest algorithms specifically, predicting if a policy is active based on text properties.</p>
-        </div>
-    """, unsafe_allow_html=True)
+    # Check if models are trained
+    import json
+    from pathlib import Path
+    models_dir = Path(__file__).parent / "models"
+    meta_path = models_dir / "Metadata.json"
     
-    if st.button("🚀 Run / Evaluate Models"):
-        with st.spinner("Training Random Forest and XGBoost models. This may take a moment..."):
-            result = train_and_evaluate_models(data_path=str(output_dir / "merged_policy_data.csv"))
+    if meta_path.exists():
+        with open(meta_path, "r") as f:
+            metadata = json.load(f)
             
-            if "error" in result:
-                st.error(f"Error during training: {result['error']}")
+        metrics = metadata.get("metrics", {})
+        best_model = metadata.get("best_model", "Unknown")
+        
+        st.markdown(f"### Current Best Model: **{best_model}**")
+        st.markdown(f"*Last Trained: {metadata.get('last_training_time', 'N/A')}*")
+        
+        # Display Comparison Table
+        if "XGBoost" in metrics and "RandomForest" in metrics:
+            xgb = metrics["XGBoost"]
+            rf = metrics["RandomForest"]
+            
+            comp_data = {
+                "Metric": ["Accuracy", "Precision", "Recall", "F1 Score", "ROC-AUC", "Prediction Time"],
+                "XGBoost": [f"{xgb['Accuracy']*100:.1f}%", f"{xgb['Precision']*100:.1f}%", f"{xgb['Recall']*100:.1f}%", f"{xgb['F1_Score']*100:.1f}%", f"{xgb['ROC_AUC']:.2f}", f"{xgb['InferenceTime']:.4f} s"],
+                "Random Forest": [f"{rf['Accuracy']*100:.1f}%", f"{rf['Precision']*100:.1f}%", f"{rf['Recall']*100:.1f}%", f"{rf['F1_Score']*100:.1f}%", f"{rf['ROC_AUC']:.2f}", f"{rf['InferenceTime']:.4f} s"]
+            }
+            st.table(pd.DataFrame(comp_data))
+            
+            # Interactive Charts using Plotly
+            import plotly.graph_objects as go
+            fig = go.Figure(data=[
+                go.Bar(name='XGBoost', x=['Accuracy', 'F1 Score', 'ROC-AUC'], y=[xgb['Accuracy'], xgb['F1_Score'], xgb['ROC_AUC']]),
+                go.Bar(name='Random Forest', x=['Accuracy', 'F1 Score', 'ROC-AUC'], y=[rf['Accuracy'], rf['F1_Score'], rf['ROC_AUC']])
+            ])
+            fig.update_layout(barmode='group', title="Model Performance Comparison", template="plotly_dark")
+            st.plotly_chart(fig, use_container_width=True)
+            
+            # Feature Importance
+            best_metrics = metrics[best_model]
+            if "FeatureImportance" in best_metrics and best_metrics["FeatureImportance"]:
+                fi = best_metrics["FeatureImportance"]
+                fi_df = pd.DataFrame(fi)
+                fig_fi = px.bar(fi_df, x="importance", y="feature", orientation='h', title=f"Top Features ({best_model})", template="plotly_dark")
+                fig_fi.update_layout(yaxis={'categoryorder':'total ascending'})
+                st.plotly_chart(fig_fi, use_container_width=True)
+    else:
+        st.warning("Models not trained yet. Please ask an Admin to trigger training.")
+
+# ==================== SYSTEM LOGS ====================
+if page == "📝 System Logs":
+    render_page_header("📝 System Logs", "Application Event Logging")
+    from utilities.logger import get_system_logs, clear_system_logs
+    
+    col1, col2 = st.columns([4, 1])
+    with col1:
+        st.markdown("View all system events, errors, and predictions.")
+    with col2:
+        if st.button("Clear Logs"):
+            if clear_system_logs():
+                st.success("Logs cleared.")
+                st.rerun()
             else:
-                metrics = result["metrics"]
-                log_path = result["log_path"]
+                st.error("Failed to clear logs.")
                 
-                st.success("Models trained successfully!")
-                
-                col1, col2 = st.columns(2)
-                with col1:
-                    rf_acc = metrics["Random Forest"]["accuracy"]
-                    st.markdown(f"""
-                        <div class='metric-card'>
-                            <div class='metric-value'>{rf_acc:.4f}</div>
-                            <div class='metric-label'>Random Forest Accuracy</div>
-                        </div>
-                    """, unsafe_allow_html=True)
-                with col2:
-                    xgb_acc = metrics["XGBoost"]["accuracy"]
-                    st.markdown(f"""
-                        <div class='metric-card'>
-                            <div class='metric-value'>{xgb_acc:.4f}</div>
-                            <div class='metric-label'>XGBoost Accuracy</div>
-                        </div>
-                    """, unsafe_allow_html=True)
-                    
-                st.markdown("### Training Log File")
-                st.markdown("Below is the output log generated during model training:")
-                
-                if Path(log_path).exists():
-                    with open(log_path, "r") as f:
-                        log_contents = f.read()
-                    st.text_area("Log Output", log_contents, height=300)
-                else:
-                    st.warning("Log file not found.")
-                    
-    st.markdown('</div>', unsafe_allow_html=True)
+    logs = get_system_logs()
+    if logs:
+        log_df = pd.DataFrame(logs)
+        st.dataframe(log_df, use_container_width=True)
+        
+        csv = log_df.to_csv(index=False).encode('utf-8')
+        st.download_button("Download Logs CSV", csv, "system_logs.csv", "text/csv")
+    else:
+        st.info("No logs available.")
 
 # Footer
 st.markdown("---")

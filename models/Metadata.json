@@ -1,0 +1,170 @@
+{
+    "last_training_time": "2026-07-10 20:33:59",
+    "best_model": "XGBoost",
+    "metrics": {
+        "RandomForest": {
+            "Accuracy": 0.9,
+            "Precision": 0.864406779661017,
+            "Recall": 0.9107142857142857,
+            "F1_Score": 0.8869565217391304,
+            "ROC_AUC": 0.9606660231660231,
+            "ConfusionMatrix": [
+                [
+                    66,
+                    8
+                ],
+                [
+                    5,
+                    51
+                ]
+            ],
+            "InferenceTime": 0.007876396179199219,
+            "TrainTime": 2.898759126663208,
+            "CrossValidationScore": 0.8313953488372093,
+            "FeatureImportance": [
+                {
+                    "feature": "mandates",
+                    "importance": 0.056348502913951506
+                },
+                {
+                    "feature": "ai",
+                    "importance": 0.04739980520947686
+                },
+                {
+                    "feature": "requires",
+                    "importance": 0.039964162792043734
+                },
+                {
+                    "feature": "instructs",
+                    "importance": 0.030412215726343342
+                },
+                {
+                    "feature": "intelligence",
+                    "importance": 0.020945456802783338
+                },
+                {
+                    "feature": "directs",
+                    "importance": 0.015742273118348193
+                },
+                {
+                    "feature": "secretary",
+                    "importance": 0.01565241967245
+                },
+                {
+                    "feature": "allows",
+                    "importance": 0.012711416069771558
+                },
+                {
+                    "feature": "artificial",
+                    "importance": 0.01188686805648527
+                },
+                {
+                    "feature": "act",
+                    "importance": 0.011810361375932
+                },
+                {
+                    "feature": "submit",
+                    "importance": 0.011774488784291694
+                },
+                {
+                    "feature": "based",
+                    "importance": 0.011513971502728357
+                },
+                {
+                    "feature": "obligates",
+                    "importance": 0.011454461007051527
+                },
+                {
+                    "feature": "establishes",
+                    "importance": 0.010856514742043856
+                },
+                {
+                    "feature": "collaboration",
+                    "importance": 0.010147384718470409
+                }
+            ]
+        },
+        "XGBoost": {
+            "Accuracy": 0.9,
+            "Precision": 0.8524590163934426,
+            "Recall": 0.9285714285714286,
+            "F1_Score": 0.888888888888889,
+            "ROC_AUC": 0.9638030888030888,
+            "ConfusionMatrix": [
+                [
+                    65,
+                    9
+                ],
+                [
+                    4,
+                    52
+                ]
+            ],
+            "InferenceTime": 0.0019466876983642578,
+            "TrainTime": 3.1469409465789795,
+            "CrossValidationScore": 0.8352713178294574,
+            "FeatureImportance": [
+                {
+                    "feature": "secretary",
+                    "importance": 0.02616014890372753
+                },
+                {
+                    "feature": "department",
+                    "importance": 0.024714715778827667
+                },
+                {
+                    "feature": "cooperation",
+                    "importance": 0.020207952708005905
+                },
+                {
+                    "feature": "financial",
+                    "importance": 0.018841546028852463
+                },
+                {
+                    "feature": "property",
+                    "importance": 0.018694201484322548
+                },
+                {
+                    "feature": "imposes",
+                    "importance": 0.01736634038388729
+                },
+                {
+                    "feature": "mandates",
+                    "importance": 0.016829608008265495
+                },
+                {
+                    "feature": "guidelines",
+                    "importance": 0.016237134113907814
+                },
+                {
+                    "feature": "instructs",
+                    "importance": 0.015279277227818966
+                },
+                {
+                    "feature": "communications",
+                    "importance": 0.014279439114034176
+                },
+                {
+                    "feature": "legal",
+                    "importance": 0.013479640707373619
+                },
+                {
+                    "feature": "policy",
+                    "importance": 0.013415003195405006
+                },
+                {
+                    "feature": "address",
+                    "importance": 0.013386623933911324
+                },
+                {
+                    "feature": "national",
+                    "importance": 0.01285547949373722
+                },
+                {
+                    "feature": "sets",
+                    "importance": 0.012243575416505337
+                }
+            ]
+        }
+    }
+}

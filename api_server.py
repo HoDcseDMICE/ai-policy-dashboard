@@ -33,6 +33,9 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+from api.routes import router as ml_router
+app.include_router(ml_router)
+
 data_dir = Path(__file__).parent / "data"
 
 def load_csv(filename: str) -> pd.DataFrame:
